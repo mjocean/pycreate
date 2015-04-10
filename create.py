@@ -95,6 +95,7 @@ OFF_MODE = 0
 PASSIVE_MODE = 1
 SAFE_MODE = 2
 FULL_MODE = 3
+DEFAULT_PORT = '/dev/tty.ElementSerial-ElementSe'
 
 # Command codes are opcodes sent to the Create via serial. They define the
 # possible message types.
@@ -324,7 +325,7 @@ class Create:
         
     # TODO: check if we can start in other modes...
 #======================== Starting up and Shutting Down================    
-    def __init__(self, PORT, startingMode=SAFE_MODE, sim_mode = False):
+    def __init__(self, PORT=DEFAULT_PORT, startingMode=SAFE_MODE, sim_mode = False):
         """ the constructor which tries to open the
             connection to the robot at port PORT
         """
