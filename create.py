@@ -618,6 +618,12 @@ class Create:
            print(bump)
         self.stop()
 
+    def bump_left(self):
+        return self.getSensor('BUMPS_AND_WHEEL_DROPS')[3] == 1
+
+    def bump_right(self):
+        return self.getSensor('BUMPS_AND_WHEEL_DROPS')[4] == 1
+
     def go( self, cmPerSec=0, degPerSec=0 ):
         """ go(cmPerSec, degPerSec) sets the robot's linear velocity to
                cmPerSec centimeters per second and its angular velocity to
