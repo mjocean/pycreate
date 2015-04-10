@@ -604,19 +604,18 @@ class Create:
         """ stop calls go(0,0) """
         self.go(0,0)
 
-    def walk(self):
-        """simple walk"""
+    def walk(self,distance=1):
+        """simple walk distance in meters"""
         stop=0
-        self.go(5)
-        while stop != 2:
-           time.sleep(1)
-           dis = self.getSensor('DISTANCE')
-           if dis == 0:
-              stop+=1   
+	#distance*100 -> cm divided by 10cm/s -> seconds of run
+	time_need = distance*10
+        self.go(10)
+	st = time.localtime()
+	ft = st + time_need
+	bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+        while ft < rt = time.localtime() or ((bump[3] ==1 or bump[4]==1)):
            bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
-           print(dis,bump)
-           if (bump[3] ==1 or bump[4]==1):
-              break
+           print(bump)
         self.stop()
 
     def go( self, cmPerSec=0, degPerSec=0 ):
