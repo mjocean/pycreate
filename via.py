@@ -3,7 +3,7 @@
 from create import Create
 from time import sleep
 
-SERIAL_PORT = "/dev/ttyUSB0"
+SERIAL_PORT = "/dev/tty.ElementSerial-ElementSe"
 
 
 def load_numbers(r, filename):

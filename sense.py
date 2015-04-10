@@ -3,7 +3,7 @@
 import time
 import create
 
-SERIAL_PORT = "/dev/ttyUSB0"
+SERIAL_PORT = "/dev/tty.ElementSerial-ElementSe"
 
 SENSOR_KEYS = [     # sensor keys with single return value
     'CLIFF_LEFT_SIGNAL',

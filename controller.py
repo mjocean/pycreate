@@ -5,7 +5,7 @@ import time
 import random
 import create 
 
-SERIAL_PORT = "/dev/ttyUSB0"
+SERIAL_PORT = "/dev/tty.ElementSerial-ElementSe"
 
 # our states
 GO_STATE = 1;

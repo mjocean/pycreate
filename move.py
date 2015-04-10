@@ -3,7 +3,7 @@
 import time
 import create
 
-SERIAL_PORT = "/dev/ttyUSB0"
+SERIAL_PORT = "/dev/tty.ElementSerial-ElementSe"
 
 
 def spin(r, num_repeats=2):

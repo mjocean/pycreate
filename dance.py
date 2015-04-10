@@ -5,7 +5,7 @@ from light import look_around
 from sound import c_chord
 from move import spin, shake, twist
 
-SERIAL_PORT = "/dev/ttyUSB0"
+SERIAL_PORT = "/dev/tty.ElementSerial-ElementSe"
 
 def dance(r, num_repeats=1):
     """First light up, then play a distinctive sound, continue with 

@@ -604,6 +604,21 @@ class Create:
         """ stop calls go(0,0) """
         self.go(0,0)
 
+    def walk(self):
+        """simple walk"""
+        stop=0
+        self.go(5)
+        while stop != 2:
+           time.sleep(1)
+           dis = self.getSensor('DISTANCE')
+           if dis == 0:
+              stop+=1   
+           bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+           print(dis,bump)
+           if (bump[3] ==1 or bump[4]==1):
+              break
+        self.stop()
+
     def go( self, cmPerSec=0, degPerSec=0 ):
         """ go(cmPerSec, degPerSec) sets the robot's linear velocity to
                cmPerSec centimeters per second and its angular velocity to
