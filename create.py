@@ -609,15 +609,30 @@ class Create:
         """simple walk distance in meters"""
         stop=0
 	#distance*100 -> cm divided by 10cm/s -> seconds of run
-	time_need = distance*10
+        time_need = distance*10
         self.go(10)
-	st = time.localtime()
-	ft = st + time_need
-	bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
-        while ft < rt = time.localtime() or ((bump[3] ==1 or bump[4]==1)):
+        st = int(round(time.time()))
+        print(st)
+        ft = st + time_need
+        bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+        rt = st
+        print(bump, ft, rt)
+        while ft > rt and ((bump[3] ==0 or bump[4]==0)):
            bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
-           print(bump)
+           rt = int(round(time.time()))
+           print(bump,ft,rt)
         self.stop()
+        if bump[3]==1 or bump[4]==1:
+           print(rt-st)
+           self.go(0,45)
+           time.sleep(4)
+           self.stop()
+           self.go(10)
+           time.sleep(rt-st)
+           self.stop()
+           self.go(0,45)
+           time.sleep(4)
+           self.stop()
 
     def bump_left(self):
         return self.getSensor('BUMPS_AND_WHEEL_DROPS')[3] == 1
