@@ -633,6 +633,8 @@ class Create:
            self.go(0,45)
            time.sleep(4)
            self.stop()
+           return False
+        return True
 
     def bump_left(self):
         return self.getSensor('BUMPS_AND_WHEEL_DROPS')[3] == 1
