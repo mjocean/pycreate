@@ -529,6 +529,7 @@ class Create:
             except select.error:
                 pass
         self.serialLock.release()
+        return successful
 #unlock
 
     def __sendOpCode(self, opcode):
@@ -550,6 +551,7 @@ class Create:
             except select.error:
                 pass
         self.serialLock.release()
+        return successful
 #unlock
 
     def __recvmsg(self, numBytes):
@@ -587,6 +589,8 @@ class Create:
                 pass
         #wait?
         #receive
+        if not successful:
+           return None
         successful = False
         favor = None
         while not successful:
@@ -607,14 +611,8 @@ class Create:
 
     def turn(self, degres=45):
         """Turn degrees multiple of 45"""
-        if (degres%45 != 0):
-           return False
-        self.go(0,45)
-        print(int(round(degres/45)))
-        if (degres == 45):
-           time.sleep(1)
-        else:
-           time.sleep(int(round(degres/45)))
+        self.go(0,-30)
+        self.waitAngle(degres*(-1))
         self.stop()
         return True
 
@@ -622,32 +620,49 @@ class Create:
         """simple walk distance in meters"""
 	#distance*100 -> cm divided by 10cm/s -> seconds of run
         time_need = distance*10
-        self.go(10)
+        dr = self.go(10)
+        print(dr)
         st = int(round(time.time()))
         print(st)
         ft = st + time_need
         bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+        if bump == None:
+           self.stop()
+           return False
         rt = st
         print(bump, ft, rt)
         while ft > rt and ((bump[3] !=1 and bump[4]!=1)):
            bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+           if bump == None:
+              self.stop()
+              return False
            rt = int(round(time.time()))
            print(bump,ft,rt)
         print("I am about to stop")
         self.stop()
-        self.go(0,0)
         if bump[3]==1 or bump[4]==1:
-           print(rt-st)
-           self.go(0,45)
-           time.sleep(4)
-           self.stop()
-           self.go(10)
-           time.sleep(rt-st)
-           self.stop()
-           self.go(0,45)
-           time.sleep(4)
-           self.stop()
+           self.my_dis((rt-st)*-10)
+           #self.turn(183)
+           #print("before go")
+           #self.go(10)
+           #print("after go")
+           #time.sleep(rt-st)
+           #print("after sleep")
+           #self.stop()
+           #print("after stop")
+           #self.turn(183)
            return False
+        return True
+
+    def my_dis(self,dis):
+        if dis <0:
+           self.go(-10)
+           self.waitDistance(dis)
+           self.stop()
+        else:
+           self.go(10)
+           self.waitDistance(dis)
+           self.stop()
         return True
 
     def bump_left(self):
@@ -662,6 +677,7 @@ class Create:
                degPerSec degrees per second
             go() is equivalent to go(0,0)
         """
+        _drive = False
         if cmPerSec == 0:
             # just handle rotation
             # convert to radians
@@ -673,14 +689,14 @@ class Create:
             # radius is 258mm/2.0
             velMmSec = math.fabs(radPerSec) * (258.0/2.0)
             # send it off to the robot
-            self.drive( velMmSec, 0, dirstr )
+            _drive = self.drive( velMmSec, 0, dirstr )
         
         elif degPerSec == 0:
             # just handle forward/backward translation
             velMmSec = 10.0*cmPerSec
             bigRadius = 32767
             # send it off to the robot
-            self.drive( velMmSec, bigRadius )
+            _drive = self.drive( velMmSec, bigRadius )
         
         else:
             # move in the appropriate arc
@@ -690,8 +706,8 @@ class Create:
             # check for extremes
             if radiusMm > 32767: radiusMm = 32767
             if radiusMm < -32767: radiusMm = -32767
-            self.drive( velMmSec, radiusMm )
-        return
+            _drive = self.drive( velMmSec, radiusMm )
+        return _drive
  
     def driveDirect( self, leftCmSec=0, rightCmSec=0 ):
         """ Go(cmpsec, degpsec) sets the robot's velocity to
@@ -718,13 +734,13 @@ class Create:
             for char in byteList:
                 temp += chr(char)
         byteList = temp
-        self.__sendmsg(DRIVEDIRECT,byteList)
+        send = self.__sendmsg(DRIVEDIRECT,byteList)
         #self.send( DRIVEDIRECT )
         #self.send( chr(rightHighVal) )
         #self.send( chr(rightLowVal) )
         #self.send( chr(leftHighVal) )
         #self.send( chr(leftLowVal) )
-        return
+        return send
         
     def waitTime(self,seconds):
         """ robot waits for the specified time to past (tenths of secs) before executing the next command (CAB)"""
@@ -805,7 +821,8 @@ class Create:
             for char in byteList:
                 temp += chr(char)        
         byteList = temp
-        self.__sendmsg(DRIVE,byteList)
+        ret_value = self.__sendmsg(DRIVE,byteList)
+        return ret_value
         #self.send( DRIVE )
         #self.send( chr(velHighVal) )
         #self.send( chr(velLowVal) )
