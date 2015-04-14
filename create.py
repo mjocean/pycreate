@@ -605,7 +605,20 @@ class Create:
         """ stop calls go(0,0) """
         self.go(0,0)
 
-    def walk(self,distance=1):
+    def turn(self, degres=45):
+        """Turn degrees multiple of 45"""
+        if (degres%45 != 0):
+           return False
+        self.go(0,45)
+        print(int(round(degres/45)))
+        if (degres == 45):
+           time.sleep(1)
+        else:
+           time.sleep(int(round(degres/45)))
+        self.stop()
+        return True
+
+    def walk(self, distance=1):
         """simple walk distance in meters"""
         stop=0
 	#distance*100 -> cm divided by 10cm/s -> seconds of run
