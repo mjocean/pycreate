@@ -620,12 +620,16 @@ class Create:
         """simple walk distance in meters"""
 	#distance*100 -> cm divided by 10cm/s -> seconds of run
         time_need = distance*10
+        for i in range(10):
+           time.sleep(.5)
+           print(self.getSensor('BUMPS_AND_WHEEL_DROPS'))
         dr = self.go(10)
         print(dr)
         st = int(round(time.time()))
         print(st)
         ft = st + time_need
         bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+        print(bump)
         if bump == None:
            self.stop()
            return False
