@@ -5,7 +5,7 @@ reason=${1-install}
 install {
    echo "Checking Python3..."
    py_version=`python3 --version | awk -F "\\." '{print $1}' | awk '{print $2}'`
-   if [ $py_version != "3" ]: then
+   if [ $py_version != "3" ]; then
       echo "install python 3.1"
       exit 1
    fi
