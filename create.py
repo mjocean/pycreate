@@ -646,15 +646,6 @@ class Create:
         self.stop()
         if bump[3]==1 or bump[4]==1:
            self.my_dis((rt-st)*-10)
-           #self.turn(183)
-           #print("before go")
-           #self.go(10)
-           #print("after go")
-           #time.sleep(rt-st)
-           #print("after sleep")
-           #self.stop()
-           #print("after stop")
-           #self.turn(183)
            return False
         return True
 
