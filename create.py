@@ -426,11 +426,13 @@ class Create:
         self.sim_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sim_sock.connect((self.sim_host,self.sim_port))
 
-    def reconnect(self,comPort):
+    def reconnect(self,comPort=None):
         '''
         This method closes the existing connection and reestablishes it.
         When things get bad, this is the only method of recovery.
         '''
+        if comPort==None:
+           comPort=self.comPort
         # Just in case it was stuck moving somewhere, stop the Create:
         self.stop()
         # Close the connection:
