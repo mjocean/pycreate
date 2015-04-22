@@ -624,10 +624,13 @@ class Create:
         time_need = distance*10
         for i in range(10):
            time.sleep(.5)
-           print(self.getSensor('BUMPS_AND_WHEEL_DROPS'))
+           all_sensors=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+           if all_sensors[3] ==1 or all_sensors[4] ==1:
+               self.reconnect()
+           print(all_sensors)
         dr = self.go(10)
         print(dr)
-        st = int(round(time.time()))
+        st = time.time()
         print(st)
         ft = st + time_need
         bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
@@ -638,16 +641,18 @@ class Create:
         rt = st
         print(bump, ft, rt)
         while ft > rt and ((bump[3] !=1 and bump[4]!=1)):
+           last = rt
            bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
            if bump == None:
               self.stop()
               return False
-           rt = int(round(time.time()))
+           rt = time.time()
            print(bump,ft,rt)
         print("I am about to stop")
         self.stop()
         if bump[3]==1 or bump[4]==1:
-           self.my_dis((rt-st)*-10)
+           print(last,st)
+           self.my_dis((last-st)*-10)
            return False
         return True
 
