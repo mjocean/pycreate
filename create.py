@@ -611,10 +611,10 @@ class Create:
         """ stop calls go(0,0) """
         self.go(0,0)
 
-    def turn(self, degres=45):
+    def turn(self, degres=90):
         """Turn degrees multiple of 45"""
         self.go(0,-30)
-        self.waitAngle(degres*(-1))
+        self.waitAngle(degres*(-1)+5)
         self.stop()
         return True
 
