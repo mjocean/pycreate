@@ -606,7 +606,16 @@ class Create:
         return favor
 
         
-#========================= Moving Around ================================================    
+#========================= Moving Around ================================================
+    def rerun(self,function,arguments=None):
+        dr = None
+        while not dr or dr == None:
+            if arguments != None:
+                dr = getattr(self,function)(arguments)
+            else:
+                dr = getattr(self,function)
+        return dr
+
     def stop(self):
         """ stop calls go(0,0) """
         self.go(0,0)
@@ -628,15 +637,21 @@ class Create:
            if all_sensors[3] ==1 or all_sensors[4] ==1:
                self.reconnect()
            print(all_sensors)
-        dr = self.go(10)
-        print(dr)
+        self.rerun("go",10)
+        #dr = self.go(10)
+
+        #while not dr or dr == None:
+        #    print("self.go not responded True")
+        #    self.reconnect()
+        #    dr = self.go(10)
+
         st = time.time()
         print(st)
         ft = st + time_need
         bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
         print(bump)
         if bump == None:
-           self.stop()
+           self.rerun("stop")
            return False
         rt = st
         print(bump, ft, rt)
@@ -644,12 +659,12 @@ class Create:
            last = rt
            bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
            if bump == None:
-              self.stop()
+              self.rerun("stop")
               return False
            rt = time.time()
            print(bump,ft,rt)
         print("I am about to stop")
-        self.stop()
+        self.rerun("stop")
         if bump[3]==1 or bump[4]==1:
            print(last,st)
            self.my_dis((last-st)*-10)
