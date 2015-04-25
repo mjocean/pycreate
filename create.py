@@ -674,13 +674,16 @@ class Create:
     def my_dis(self,dis):
         if dis <0:
            self.go(-10)
-           self.waitDistance(dis)
+           self.waitDistance(dis+1)
            self.stop()
         else:
            self.go(10)
-           self.waitDistance(dis)
+           self.waitDistance(dis-1)
            self.stop()
         return True
+
+    def walk_right(self):
+
 
     def bump_left(self):
         return self.getSensor('BUMPS_AND_WHEEL_DROPS')[3] == 1
