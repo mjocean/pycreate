@@ -325,7 +325,7 @@ class Create:
         
     # TODO: check if we can start in other modes...
 #======================== Starting up and Shutting Down================    
-    def __init__(self, PORT=DEFAULT_PORT, startingMode=SAFE_MODE, sim_mode = False):
+    def __init__(self, PORT=DEFAULT_PORT, startingMode=SAFE_MODE, sim_mode=False):
         """ the constructor which tries to open the
             connection to the robot at port PORT
         """
@@ -620,16 +620,16 @@ class Create:
         """ stop calls go(0,0) """
         self.go(0,0)
 
-    def turn(self, degres=90):
+    def turn(self, degrees=90):
         """Turn degrees multiple of 45"""
         self.go(0,-30)
-        self.waitAngle(degres*(-1)+5)
+        self.waitAngle(degrees*(-1)+5)
         self.stop()
         return True
 
     def walk(self, distance=1):
         """simple walk distance in meters"""
-	#distance*100 -> cm divided by 10cm/s -> seconds of run
+        #distance*100 -> cm divided by 10cm/s -> seconds of run
         time_need = distance*10
         for i in range(10):
            time.sleep(.5)
