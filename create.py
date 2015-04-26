@@ -683,7 +683,18 @@ class Create:
         return True
 
     def walk_right(self):
+        walk = False
+        self.turn()
+        walk = self.walk()
+        self.turn(270)
+        return walk
 
+    def walk_left(self):
+        walk = False
+        self.turn(270)
+        walk = self.walk()
+        self.turn()
+        return walk
 
     def bump_left(self):
         return self.getSensor('BUMPS_AND_WHEEL_DROPS')[3] == 1
