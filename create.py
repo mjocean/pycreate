@@ -634,17 +634,12 @@ class Create:
         for i in range(10):
            time.sleep(.5)
            all_sensors=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+           while all_sensors == None:
+               all_sensors=self.getSensor('BUMPS_AND_WHEEL_DROPS')
            if all_sensors[3] ==1 or all_sensors[4] ==1:
                self.reconnect()
            print(all_sensors)
         self.rerun("go",10)
-        #dr = self.go(10)
-
-        #while not dr or dr == None:
-        #    print("self.go not responded True")
-        #    self.reconnect()
-        #    dr = self.go(10)
-
         st = time.time()
         print(st)
         ft = st + time_need
