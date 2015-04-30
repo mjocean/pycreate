@@ -622,8 +622,11 @@ class Create:
 
     def turn(self, degrees=90):
         """Turn degrees multiple of 45"""
+        if degrees < 0:
+            return False
+        print("inside turn")
         self.go(0,-30)
-        self.waitAngle(degrees*(-1)+5)
+        self.waitAngle((degrees-5)*(-1))
         self.stop()
         return True
 
