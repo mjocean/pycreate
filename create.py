@@ -631,7 +631,11 @@ class Create:
         return True
 
     def walk(self, distance=1):
-        """simple walk distance in meters"""
+        """
+           It is tuned for 1 meter and this speed.
+           It will return to its starting position
+           if hits an obstacle.
+        """
         #distance*100 -> cm divided by 10cm/s -> seconds of run
         time_need = distance*10
         for i in range(10):
@@ -642,14 +646,14 @@ class Create:
            if all_sensors[3] ==1 or all_sensors[4] ==1:
                self.reconnect()
            print(all_sensors)
-        self.rerun("go",10)
+        self.go(10)
         st = time.time()
         print(st)
-        ft = st + time_need
+        ft = st + time_need +0.5
         bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
         print(bump)
         if bump == None:
-           self.rerun("stop")
+           self.stop()
            return False
         rt = st
         print(bump, ft, rt)
@@ -657,15 +661,16 @@ class Create:
            last = rt
            bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
            if bump == None:
-              self.rerun("stop")
+              print("Not good bunper is None")
+              self.stop()
               return False
            rt = time.time()
            print(bump,ft,rt)
         print("I am about to stop")
-        self.rerun("stop")
+        self.stop()
         if bump[3]==1 or bump[4]==1:
            print(last,st)
-           self.my_dis((last-st)*-10)
+           self.my_dis((last-st-1)*-10)
            return False
         return True
 
