@@ -652,20 +652,33 @@ class Create:
         ft = st + time_need +0.5
         bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
         print(bump)
-        if bump == None:
-           self.stop()
-           return False
+        while bump == None:
+            self.stop()
+            self.reconnect()
+            self.go(10)
+            st = time.time()
+            print(st)
+            ft = st + time_need +0.5
+            bump = self.getSensor('BUMPS_AND_WHEEL_DROPS')
         rt = st
         print(bump, ft, rt)
         while ft > rt and ((bump[3] !=1 and bump[4]!=1)):
-           last = rt
-           bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
-           if bump == None:
-              print("Not good bunper is None")
-              self.stop()
-              return False
-           rt = time.time()
-           print(bump,ft,rt)
+            wrong_bumper = False
+            last = rt
+            current_time = time.time()
+            bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+            while bump == None:
+                wrong_bumper = True
+                print("Not good bunper is None")
+                self.stop()
+                self.reconnect()
+                bump = self.getSensor('BUMPS_AND_WHEEL_DROPS')
+            if wrong_bumper:
+                new_time = time.time()
+                ft += new_time-current_time
+                self.go(10)
+            rt = time.time()
+            print(bump,ft,rt)
         print("I am about to stop")
         self.stop()
         if bump[3]==1 or bump[4]==1:
