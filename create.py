@@ -405,14 +405,16 @@ class Create:
         #self.setLEDs(80,255,0,0) # MB: was 100, want more yellowish        
 
     def send(self, bytes1):
+        bytes_written = 0
         if self.in_sim_mode:
             if self.ser:
-                self.ser.write( (bytes(bytes1, encoding = 'Latin-1')) )
+                bytes_written = self.ser.write( (bytes(bytes1, encoding = 'Latin-1')) )
             #print(bytes1)
             print (bytes(bytes1, encoding = 'Latin-1'))
             self.sim_sock.send( (bytes(bytes1, encoding = 'Latin-1')) )
         else:
-            self.ser.write( (bytes(bytes1, encoding = 'Latin-1')) )
+            bytes_written = self.ser.write( (bytes(bytes1, encoding = 'Latin-1')) )
+        #print(bytes_written)
 
     def read(self, bytes):
         message = ""
