@@ -666,23 +666,26 @@ class Create:
         ft = st + time_need + 0.5
         bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
         while bump == None:
-            self.stop()
             self.reconnect()
-            self.go(10)
+            self.stop()
             st = time.time()
             print(st)
             ft = st + time_need + 0.5
             bump = self.getSensor('BUMPS_AND_WHEEL_DROPS')
+            self.go(10)
         rt = st
         while ft > rt and ((bump[3] !=1 and bump[4]!=1)):
             wrong_bumper = False
             last = rt
             current_time = time.time()
             bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+            wall_sensor = 'Wall sensor: ' + self.getSensor('WALL') + "Wall signal: " + self.getSensor('WALL_SIGNAL')
+            print(wall_sensor)
             while bump == None:
                 wrong_bumper = True
                 print("Not good bunp is None")
                 self.reconnect()
+                self.stop()
                 bump = self.getSensor('BUMPS_AND_WHEEL_DROPS')
             if wrong_bumper:
                 new_time = time.time()
