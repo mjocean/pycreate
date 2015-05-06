@@ -713,21 +713,21 @@ class Create:
            self.stop()
         return True
 
-    def walk_right(self):
+    def walk_right(self,distance):
         walk = False
         self.turn()
         walk = self.walk()
         self.turn(270)
         return walk
 
-    def walk_left(self):
+    def walk_left(self,distance):
         walk = False
         self.turn(270)
         walk = self.walk()
         self.turn()
         return walk
 
-    def walk_back(self):
+    def walk_back(self,distance):
         walk = False
         self.turn(180)
         walk = self.walk()
