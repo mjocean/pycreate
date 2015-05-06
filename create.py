@@ -356,7 +356,11 @@ class Create:
             else:
                 # for Mac/Linux - use whole port name
                 # print 'In Mac/Linux mode...'
-                self.ser = serial.Serial(PORT, baudrate=57600, timeout=0.5)
+                try:
+                    self.ser = serial.Serial(PORT, baudrate=57600, timeout=0.5)
+                except:
+                    time.sleep(1)
+                    self.ser = serial.Serial(PORT, baudrate=57600, timeout=0.5)
         # otherwise, we try to open the numeric serial port...
                 if (sim_mode):
                     self.init_sim_mode()
