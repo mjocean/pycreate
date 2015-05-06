@@ -715,16 +715,20 @@ class Create:
 
     def walk_right(self,distance):
         walk = False
-        self.turn()
+        self.turn_90()
+        #self.turn()
         walk = self.walk()
-        self.turn(270)
+        self.turn(-90)
+        #self.turn(270)
         return walk
 
     def walk_left(self,distance):
         walk = False
-        self.turn(270)
+        #self.turn(270)
+        self.turn(-90)
         walk = self.walk()
-        self.turn()
+        #self.turn()
+        self.turn_90()
         return walk
 
     def walk_back(self,distance):
