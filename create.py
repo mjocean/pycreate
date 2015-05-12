@@ -654,24 +654,25 @@ class Create:
         """
         #distance*100 -> cm divided by 10cm/s -> seconds of run
         time_need = (distance*100)/SPEED
+        la = self.getSensor("DISTANCE")
         for i in range(10):
            time.sleep(.5)
-           all_sensors=self.getSensor('BUMPS_AND_WHEEL_DROPS')
-           while all_sensors == None:
-               all_sensors=self.getSensor('BUMPS_AND_WHEEL_DROPS')
-           if all_sensors[3] ==1 or all_sensors[4] ==1:
+           bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+           while bump == None:
+               bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+           if bump[3] ==1 or bump[4] ==1:
                self.reconnect()
-           print(all_sensors)
+           print(bump)
         self.go(SPEED)
         st = time.time()
-        ft = st + time_need + 0.5
-        bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
+        ft = st + time_need
+        #bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
         while bump == None:
             self.reconnect()
             self.stop()
             st = time.time()
             print(st)
-            ft = st + time_need + 0.5
+            ft = st + time_need
             bump = self.getSensor('BUMPS_AND_WHEEL_DROPS')
             self.go(SPEED)
         rt = st
@@ -680,8 +681,6 @@ class Create:
             last = rt
             current_time = time.time()
             bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
-            wall_sensor = 'Wall sensor: ' + self.getSensor('WALL') + "Wall signal: " + self.getSensor('WALL_SIGNAL')
-            print(wall_sensor)
             while bump == None:
                 wrong_bumper = True
                 print("Not good bunp is None")
@@ -694,10 +693,16 @@ class Create:
                 self.go(SPEED)
             rt = time.time()
         self.stop()
+        bla = self.getSensor("DISTANCE")
+        print(la)
+        print(bla)
         if bump[3]==1 or bump[4]==1:
-           print(last,st)
-           self.my_dis((last-st-1)*-10)
-           return False
+            print(bump)
+            print(last,st,ft,rt)
+            self.my_dis((last-st+0.6)*-SPEED)
+            print("returning false")
+            return False
+        print("returning true")
         return True
 
     def my_dis(self,dis):
