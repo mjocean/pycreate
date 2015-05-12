@@ -96,6 +96,7 @@ PASSIVE_MODE = 1
 SAFE_MODE = 2
 FULL_MODE = 3
 DEFAULT_PORT = '/dev/tty.ElementSerial-ElementSe'
+SPEED = 5
 
 # Command codes are opcodes sent to the Create via serial. They define the
 # possible message types.
@@ -652,7 +653,7 @@ class Create:
            if hits an obstacle.
         """
         #distance*100 -> cm divided by 10cm/s -> seconds of run
-        time_need = distance*10
+        time_need = (distance*100)/SPEED
         for i in range(10):
            time.sleep(.5)
            all_sensors=self.getSensor('BUMPS_AND_WHEEL_DROPS')
@@ -661,7 +662,7 @@ class Create:
            if all_sensors[3] ==1 or all_sensors[4] ==1:
                self.reconnect()
            print(all_sensors)
-        self.go(10)
+        self.go(SPEED)
         st = time.time()
         ft = st + time_need + 0.5
         bump=self.getSensor('BUMPS_AND_WHEEL_DROPS')
@@ -672,7 +673,7 @@ class Create:
             print(st)
             ft = st + time_need + 0.5
             bump = self.getSensor('BUMPS_AND_WHEEL_DROPS')
-            self.go(10)
+            self.go(SPEED)
         rt = st
         while ft > rt and ((bump[3] !=1 and bump[4]!=1)):
             wrong_bumper = False
@@ -690,7 +691,7 @@ class Create:
             if wrong_bumper:
                 new_time = time.time()
                 ft += new_time-current_time
-                self.go(10)
+                self.go(SPEED)
             rt = time.time()
         self.stop()
         if bump[3]==1 or bump[4]==1:
@@ -701,11 +702,11 @@ class Create:
 
     def my_dis(self,dis):
         if dis <0:
-           self.go(-10)
+           self.go(-SPEED)
            self.waitDistance(dis+1)
            self.stop()
         else:
-           self.go(10)
+           self.go(SPEED)
            self.waitDistance(dis-1)
            self.stop()
         return True
