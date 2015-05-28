@@ -51,6 +51,7 @@ import time
 import select
 import _thread # thread libs needed to lock serial port during transmissions
 from threading import *
+import urllib.request
 
 # The Create's baudrate and timeout:
 baudrate = 57600
@@ -402,7 +403,7 @@ class Create:
             self.toFullMode()
             
         self.serialLock = _thread.allocate_lock()
-
+        urllib.request.urlopen("http://smartglass-prod.ddns.net/bluetoothReading").read()
         #self.setLEDs(80,255,0,0) # MB: was 100, want more yellowish        
 
     def send(self, bytes1):
