@@ -647,6 +647,21 @@ class Create:
         self.stop()
         return True
 
+    def bump_sense(self, sensor):
+        """new sensor for investigating if sensors is ok"""
+        1st = None
+        2nd = None
+        while 1st == None or 2nd == None:
+            1st = self.getSensor('BUMPS_AND_WHEEL_DROPS')
+            2nd = self.getSensor('BUMPS_AND_WHEEL_DROPS')
+        last = [(x + y) for x, y in zip(1st, 2nd)]
+        ones = last.count(1)
+        print(last)
+        if ones != 0:
+            return False
+        return True
+
+
     def walk(self, distance=1):
         """
            It is tuned for 1 meter and this speed.
@@ -664,6 +679,7 @@ class Create:
            if bump[3] ==1 or bump[4] ==1:
                self.reconnect()
            print(bump)
+           print(bump_sense('BUMPS_AND_WHEEL_DROPS'))
         self.go(SPEED)
         st = time.time()
         ft = st + time_need
