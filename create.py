@@ -646,12 +646,12 @@ class Create:
 
     def bump_sense(self, sensor):
         """new sensor for investigating if sensors is ok"""
-        1st = None
-        2nd = None
-        while 1st == None or 2nd == None:
-            1st = self.getSensor('BUMPS_AND_WHEEL_DROPS')
-            2nd = self.getSensor('BUMPS_AND_WHEEL_DROPS')
-        last = [(x + y) for x, y in zip(1st, 2nd)]
+        first = None
+        second = None
+        while first == None or second == None:
+            first = self.getSensor('BUMPS_AND_WHEEL_DROPS')
+            second = self.getSensor('BUMPS_AND_WHEEL_DROPS')
+        last = [(x + y) for x, y in zip(first, second)]
         ones = last.count(1)
         print(last)
         if ones != 0:
