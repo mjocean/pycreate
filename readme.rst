@@ -6,22 +6,24 @@ serial interface called, "iRobot Create Open Interface."  Pycreate uses a
 Python implementation of this interface from 
 `Rose-Hulman <http://www.rose-hulman.edu/class/csse/resources/>`_.
 
+What is this Fork?  
+-----
+A backport of pyCreate to be Python 2.7 compatible-- very much still under development.  
+Surely this is offensive to some, but Python 2.7 is still used by many.  
+
 Requirements
 
-* Python >= 3.1::
+* Python >= 2.6 && Python <= 3.x::
 
-    $ sudo apt-get install python3.1
+    https://www.python.org/download/releases/2.7/
 
 * PySerial >= 1.0::
     
-    $ wget http://pypi.python.org/packages/source/p/pyserial/pyserial-2.5.tar.gz#md5=34340820710239bea2ceca7f43ef8cab
-    $ tar zxvf pyserial-2.5.tar.gz
-    $ cd pyserial-2.5/
-    $ sudo python3.1 setup.py install
+    http://pythonhosted.org/pyserial/pyserial.html#installation
 
 * TkInter::
 
-    $ sudo apt-get install python3.1-tk
+    https://www.python.org/download/mac/tcltk/
 
 Resouces
 
@@ -48,20 +50,24 @@ After choosing an above option, get started (see Resources for Simulator):
 
 Software
 --------
-Set appropriate PYTHONPATH, clone pycreate to your home directory, and start python3.1::
+Copy this folder into your project folder and start python from the project folder
+--e.g., if you are working in `/home/user/myRobot`, copy into `/home/user/myRobot/pyCreate`
+Download the ZIP into that folder *or* use git clone from the command line
 
-    $ echo "export PYTHONPATH=/home/mgobryan/pycreate" >> ~/.bashrc
-    $ source ~/.bashrc
-    $ cd ~
-    $ git clone git://github.com/mgobryan/pycreate
+    $ git clone git://github.com/mjocean/pycreate
     
     Python needs the OS assigned serial port name given to robot hardware.
+    Linux/OSX:
     $ ls /dev/tty <tab>  # determine the correct serial port to robot hardware
     /dev/ttyUSB0         # my serial port name associated with create, yours may differ
-    
-    $ python3.1          # start python
-    >>> import create    # load the create module into memory
+    WINDOWS:
+    Launch the Arduino development GUI and check the COM port number
+
+    $ python             # start python
+    >>> from pyCreate import create    # load the create module into memory
     >>> r = create.Create('/dev/ttyUSB0')  # open serial connection, assign object to r
+        - or -
+    >>> r = create.Create('COM4')  # open serial connection for windows
 
 Sense::
 
@@ -211,15 +217,3 @@ Appendix
 
   - a function to print out sensors key, value pairs.
 
-* Pygame install with python3.1::
-
-    $ sudo apt-get install python3.1-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev libsmpeg-dev libportmidi-dev
-    $ svn co svn://seul.org/svn/pygame/trunk pygame
-    $ cd pygame/
-    $ python3.1 setup.py build
-    $ sudo python3.1 setup.py install
-
-* Running tests, the discover module looks for modules in the current folder or subfolder with names that start with test:
-
-    * Python 3.1 or earlier: python3 -m discover
-    * Python 3.2 or later: python3 -m unittest discover 

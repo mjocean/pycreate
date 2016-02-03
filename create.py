@@ -49,9 +49,8 @@ import socket
 import math
 import time
 import select
-import _thread # thread libs needed to lock serial port during transmissions
+import thread # thread libs needed to lock serial port during transmissions
 from threading import *
-import urllib.request
 
 # The Create's baudrate and timeout:
 baudrate = 57600
@@ -240,7 +239,7 @@ def toBinary( val, numBits ):
         """ prints numBits digits of val in binary """
         if numBits == 0:  return
         toBinary( val>>1 , numBits-1 )
-        print((val & 0x01), end=' ')  # print least significant bit
+        print (val & 0x01),  # print least significant bit
 
 def fromBinary( s ):
         """ s is a string of 0's and 1's """
@@ -402,21 +401,19 @@ class Create:
             time.sleep(0.3)
             self.toFullMode()
             
-        self.serialLock = _thread.allocate_lock()
-        urllib.request.urlopen("http://smartglass-prod.ddns.net/bluetoothReading").read()
+        self.serialLock = thread.allocate_lock()
+
         #self.setLEDs(80,255,0,0) # MB: was 100, want more yellowish        
 
     def send(self, bytes1):
-        bytes_written = 0
         if self.in_sim_mode:
             if self.ser:
-                bytes_written = self.ser.write( (bytes(bytes1, encoding = 'Latin-1')) )
+                self.ser.write( bytes(bytes1) )
             #print(bytes1)
-            print (bytes(bytes1, encoding = 'Latin-1'))
-            self.sim_sock.send( (bytes(bytes1, encoding = 'Latin-1')) )
+            print (bytes(bytes1))
+            self.sim_sock.send( bytes(bytes1) )
         else:
-            bytes_written = self.ser.write( (bytes(bytes1, encoding = 'Latin-1')) )
-        #print(bytes_written)
+            self.ser.write( bytes(bytes1) )
 
     def read(self, bytes):
         message = ""
@@ -426,7 +423,7 @@ class Create:
             message = self.sim_sock.recv( bytes )
         else:
             message = self.ser.read( bytes )
-        return str(message, encoding='Latin-1');
+        return str(message)
 
     def init_sim_mode(self):
         print('In simulated mode, connecting to simulator socket')
