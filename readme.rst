@@ -20,6 +20,7 @@ Requirements
 * PySerial >= 1.0::
     
     http://pythonhosted.org/pyserial/pyserial.html#installation
+    (2.7 recommended: https://pypi.python.org/pypi/pyserial/2.7)
 
 * TkInter::
 
@@ -56,16 +57,20 @@ Download the ZIP into that folder *or* use git clone from the command line
 
     $ git clone git://github.com/mjocean/pycreate
     
-Python needs the OS assigned serial port name given to robot hardware.
+We need to know the OS assigned serial port name given to robot hardware.
 Linux/OSX::
     $ ls /dev/tty <tab>  # determine the correct serial port to robot hardware
     /dev/ttyUSB0         # my serial port name associated with create, yours may differ
+Windows::
+  Launch the Arduino development GUI and check the COM port number, as shown here:
+  https://www.arduino.cc/en/uploads/Guide/SelectingUno.png
 
-WINDOWS (or OSX, for that matter)::
-Launch the Arduino development GUI and check the COM port number, as shown here:
-https://www.arduino.cc/en/uploads/Guide/SelectingUno.png
+Take a note of the value above, either `/dev/ttyXXXX` or `COM#`
 
+Any OS:: Launch Python:
     $ python             # start python
+
+From Python, import the create library:
     >>> from pyCreate import create    # load the create module into memory
 
 OSX users type::
